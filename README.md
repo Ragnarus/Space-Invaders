@@ -4,7 +4,7 @@ Topics: sensors, special gestures, multi-device and outstanding look feel
 
 Programming Language: Java
 
-#Ziele:
+# Ziele:
 We want to recreate the game Space Innvaders.
 
 The game has the following characteristics:
