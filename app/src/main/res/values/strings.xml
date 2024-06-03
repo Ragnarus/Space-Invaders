@@ -2,4 +2,10 @@
     <string name="app_name">SpaceInvaders</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_game">New Game!!</string>
+    <string name="Continue">Continue</string>
+    <string name="highscores">Highscores</string>
+    <string name="options">Options</string>
+    <string name="about">About</string>
+    <string name="close">Close</string>
 </resources>
