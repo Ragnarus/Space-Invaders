@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- res/values/style.xml -->
+    <style name="RoundedButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_margin">30sp</item>
+
+        <item name="android:textSize">24sp</item>
+
+        <!-- Optional: Weitere Attribute hinzufügen -->
+    </style>
+
+</resources>
