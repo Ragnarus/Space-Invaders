@@ -1,64 +1,54 @@
 package com.example.spaceinvaders;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StartScreenFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class StartScreenFragment extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import com.example.spaceinvaders.databinding.FragmentStartScreenBinding;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public StartScreenFragment() {
-        // Required empty public constructor
-    }
+public class StartScreenFragment extends Fragment implements StartScreenViewModel.NavigationCommand {
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StartScreenFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StartScreenFragment newInstance(String param1, String param2) {
-        StartScreenFragment fragment = new StartScreenFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    private StartScreenViewModel viewModel;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        FragmentStartScreenBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_start_screen, container, false);
+        viewModel = new ViewModelProvider(this, new StartScreenViewModelFactory(this)).get(StartScreenViewModel.class);
+        binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
+        return binding.getRoot();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void navigateTo(int fragmentId) {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+        switch (fragmentId) {
+            case 0:
+                transaction.replace(R.id.fragmentContainer, GameScreenFragment.class, null).commit();
+                break;
+            case 1:
+                transaction.replace(R.id.fragmentContainer, HighscoreScreenFragment.class, null).commit();
+                break;
+            case 2:
+                transaction.replace(R.id.fragmentContainer, OptionsScreenFragment.class, null).commit();
+                break;
+            case 3:
+                transaction.replace(R.id.fragmentContainer, AboutScreenFragment.class, null).commit();
+                break;
+            case 4:
+                getActivity().finishAffinity();
+                break;
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start_screen, container, false);
     }
 }

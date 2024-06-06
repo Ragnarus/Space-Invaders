@@ -1,61 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".StartScreenFragment"
-    android:background="@color/black"
-    android:orientation="vertical">
+    tools:context=".StartScreenFragment">
 
-        <Button
-            android:id="@+id/newGameBtn"
+        <data>
+                <variable
+                    name="viewModel"
+                    type="com.example.spaceinvaders.StartScreenViewModel" />
+        </data>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/RoundedButton"
-            android:text="@string/new_game"
-            />
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/continueBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/RoundedButton"
-            android:text="@string/Continue"
-            android:visibility="gone"
-            />
+                <Button
+                    android:id="@+id/newGameBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RoundedButton"
+                    android:text="@string/new_game"
+                    android:onClick="@{() -> viewModel.onClick(0)}"
+                    />
 
-        <Button
-            android:id="@+id/highscoreBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/RoundedButton"
-            android:text="@string/highscores"
-            />
+                <Button
+                    android:id="@+id/continueBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RoundedButton"
+                    android:text="@string/Continue"
+                    android:visibility="gone"
+                    />
 
-        <Button
-            android:id="@+id/Options"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/RoundedButton"
-            android:text="@string/options"
-            />
+                <Button
+                    android:id="@+id/highscoreBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RoundedButton"
+                    android:text="@string/highscores"
+                    android:onClick="@{() -> viewModel.onClick(1)}"
+                    />
 
+                <Button
+                    android:id="@+id/Options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RoundedButton"
+                    android:text="@string/options"
+                    android:onClick="@{() -> viewModel.onClick(2)}"
+                    />
 
+                <Button
+                    android:id="@+id/About"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RoundedButton"
+                    android:text="@string/about"
+                    android:onClick="@{() -> viewModel.onClick(3)}"
+                    />
 
-        <Button
-            android:id="@+id/About"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/RoundedButton"
-            android:text="@string/about"
-            />
+                <Button
+                    android:id="@+id/Close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RoundedButton"
+                    android:text="@string/close"
+                    android:onClick="@{() -> viewModel.onClick(4)}"
+                    />
 
-        <Button
-            android:id="@+id/Close"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/RoundedButton"
-            android:text="@string/close"
-            />
-
-</LinearLayout>
+        </LinearLayout>
+</layout>
