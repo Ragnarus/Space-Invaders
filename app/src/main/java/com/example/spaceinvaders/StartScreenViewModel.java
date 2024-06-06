@@ -1,37 +1,22 @@
 package com.example.spaceinvaders;
 
-import static androidx.core.app.ActivityCompat.finishAffinity;
+import androidx.lifecycle.ViewModel;
 
-import android.app.Activity;
+public class StartScreenViewModel extends ViewModel {
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
+    private NavigationCommand navigationCommand;
 
-import java.io.Closeable;
-
-public class StartScreenViewModel extends androidx.lifecycle.ViewModel {
-
-    private FragmentTransaction transaction;
-    private Activity mainRef;
-
-
-    public StartScreenViewModel(FragmentTransaction transaction, Activity mainRef) {
-        this.transaction = transaction;
-        this.mainRef = mainRef;
+    public interface NavigationCommand {
+        void navigateTo(int fragmentId);
     }
 
-    public void onClick(int i){
-        switch (i)  {
-            case 0: transaction.replace(R.id.fragmentContainer, GameScreenFragment.class, null).commit();
-            case 1: transaction.replace(R.id.fragmentContainer, HighscoreScreenFragment.class, null).commit();
-            case 2: transaction.replace(R.id.fragmentContainer, OptionsScreenFragment.class, null).commit();
-            case 3: transaction.replace(R.id.fragmentContainer, AboutScreenFragment.class, null).commit();
-            case 4:  finishAffinity(mainRef);
+    public StartScreenViewModel(NavigationCommand navigationCommand) {
+        this.navigationCommand = navigationCommand;
+    }
 
-
+    public void onClick(int i) {
+        if (navigationCommand != null) {
+            navigationCommand.navigateTo(i);
         }
-
-
     }
-
 }
