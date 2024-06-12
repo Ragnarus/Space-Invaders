@@ -3,6 +3,7 @@ package com.example.spaceinvaders;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +31,12 @@ public class GameScreenFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         panel.resume();
     }
 
-
+    public void setGameEndScreen(){
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragmentContainer, EndGameScreenFragment.class, null).commit();
+    }
 
 }

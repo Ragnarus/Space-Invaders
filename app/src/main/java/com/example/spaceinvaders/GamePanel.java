@@ -16,30 +16,35 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewTreeObserver;
 
+import androidx.fragment.app.FragmentTransaction;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class GamePanel extends SurfaceView implements Runnable, SensorEventListener {
-
+    //TODO use Accelometer
     private SensorManager sensorManager;
     private Sensor gyroscopeSensor;
     private SurfaceHolder mSurfaceHolder;
-
+    private int screenHeight;
+    private int screenWidth;
     private Paint mPaint;
     private boolean mRunning;
     private Thread mThread;
 
+    //PlayerStats
+    private final int MAX_PLAYER_Lives = 3;
+    private  int currentPlayerLives;
     private int playerShipXCord;
     private int playerShipYCord;
     private float xRotationRate;
     private static final int playerShipSizex = 180;
     private static final int playerShipSizey = 100;
-    private int screenHeight;
-    private int screenWidth;
     private Bitmap playerShipBitmap;
     private Bitmap  playerProjectileBitmap;
     private int shipMovementSpeed = 50;
 
+    //Projectiles
     private List<Projectile> projectiles;
     private static final float PROJECTILE_WIDTH = 20;
     private static final float PROJECTILE_HEIGHT = 40;
@@ -73,6 +78,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         projectiles = new ArrayList<>();
+        currentPlayerLives = MAX_PLAYER_Lives;
         resume();
 
         // Load the player ship bitmap from resources
@@ -95,6 +101,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
 
     }
 
+    //TODO: Player hit detection, Enemy projectiles and enemy spawn logic and animation
     @Override
     public void run() {
         while (mRunning) {
@@ -113,6 +120,9 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                 }
                 if (playerShipXCord + playerShipSizex > screenWidth) {
                     playerShipXCord = screenWidth - playerShipSizex;
+                }
+                if (currentPlayerLives <= 0){
+                    //TODO endgame and tell endgameFrag if lose or win
                 }
 
                 // Update and draw projectiles
