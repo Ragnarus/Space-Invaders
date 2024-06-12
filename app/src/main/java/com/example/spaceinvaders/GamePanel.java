@@ -20,6 +20,9 @@ import android.view.ViewTreeObserver;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
@@ -93,6 +96,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         projectiles = new ArrayList<>();
+        enemies = new ArrayList<>();
         currentPlayerLives = MAX_PLAYER_Lives;
         enemies = new ArrayList<>();
 
@@ -163,6 +167,28 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                 if (currentPlayerLives <= 0){
                     //TODO endgame and tell endgameFrag if lose or win
                 }
+
+                // Draw player ship
+                canvas.drawBitmap(playerShipBitmap, playerShipXCord, playerShipYCord, mPaint);
+
+
+                //Update and draw Enemys
+                mPaint.setColor(Color.WHITE);
+                List<EnemyShips> enemysToRemove = new ArrayList<>();
+                //All Enemys destroyed if yes end game
+                if (enemies.isEmpty()) {
+
+                } else {
+                    for (EnemyShips enemyShip : enemies){
+                        if (enemyShip.lives <= 0){
+                            enemysToRemove.add(enemyShip);
+                        } else {
+                            canvas.drawBitmap(enemyShipBitmap, enemyShip.x,enemyShip.y , mPaint);
+                        }
+                    }
+                }
+
+                enemies.removeAll(enemysToRemove);
 
                 // Draw player ship
                 canvas.drawBitmap(playerShipBitmap, playerShipXCord, playerShipYCord, mPaint);
