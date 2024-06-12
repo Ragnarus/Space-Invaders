@@ -16,17 +16,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewTreeObserver;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import androidx.fragment.app.FragmentTransaction;
-
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
 public class GamePanel extends SurfaceView implements Runnable, SensorEventListener {
@@ -39,6 +29,8 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
     private Paint mPaint;
     private boolean mRunning;
     private Thread mThread;
+    private ComTool comTool;
+    private int score;
 
     //PlayerStats
     private final int MAX_PLAYER_Lives = 3;
@@ -48,10 +40,8 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
     private float xRotationRate;
     private static final int playerShipSizex = 180;
     private static final int playerShipSizey = 100;
-
     private Bitmap playerShipBitmap;
-
-    private int shipMovementSpeed = 50;
+    private final int shipMovementSpeed = 50;
 
     //Projectile Properties
     private List<Projectile> projectiles;
@@ -77,6 +67,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
     public GamePanel(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
+
     }
 
     public GamePanel(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -89,12 +80,23 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
         init(context);
     }
 
+    public interface ComTool {
+        void gameHasEnded(boolean won, int score);
+    }
+
+    public void setComTool(ComTool comTool) {
+        this.comTool = comTool;
+    }
+
     private void init(Context context) {
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
         mPaint.setColor(Color.DKGRAY);
+
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+
+        score = 0;
         projectiles = new ArrayList<>();
         enemies = new ArrayList<>();
         currentPlayerLives = MAX_PLAYER_Lives;
@@ -124,14 +126,14 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
     }
 
     // Initialisierung der feindlichen Schiffe
-    private void initializeEnemies() {//geht net gscheid
+    private void initializeEnemies() {//TODO: geht net gscheid
         //Enemy Init
         int x = 0;
         float y = ENEMY_HEIGHT/2;
         float distance = (ENEMY_WIDTH * MAX_ENEMY_PER_ROW)/5;
         for (int i = 1; i <= ENEMY_COUNT; i++) {
             enemies.add(new EnemyShips(x,y,ENEMY_WIDTH,ENEMY_HEIGHT, ENEMY_LIVES));
-            x += ENEMY_WIDTH * 2;//-22 comes from a sense of proportion
+            x += ENEMY_WIDTH * 2;
             if (i % 5 == 0){
                 x = 0;
                 y += ENEMY_HEIGHT +  ENEMY_HEIGHT/2;
@@ -146,7 +148,6 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
     @Override
     public void run() {
         while (mRunning) {
-            //TODO why is screen hight and width always 0
 
             if (!mSurfaceHolder.getSurface().isValid()) {
                 continue;
@@ -166,18 +167,16 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                 }
                 if (currentPlayerLives <= 0){
                     //TODO endgame and tell endgameFrag if lose or win
+                    comTool.gameHasEnded(false,score);
                 }
-
-                // Draw player ship
                 canvas.drawBitmap(playerShipBitmap, playerShipXCord, playerShipYCord, mPaint);
 
-
-                //Update and draw Enemys
+                //Update and draw Enemies
                 mPaint.setColor(Color.WHITE);
                 List<EnemyShips> enemysToRemove = new ArrayList<>();
-                //All Enemys destroyed if yes end game
                 if (enemies.isEmpty()) {
-
+                    //TODO All Enemies destroyed if yes end game
+                    comTool.gameHasEnded(true,score);
                 } else {
                     for (EnemyShips enemyShip : enemies){
                         if (enemyShip.lives <= 0){
@@ -187,54 +186,28 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                         }
                     }
                 }
-
-                enemies.removeAll(enemysToRemove);
-
-                // Draw player ship
-                canvas.drawBitmap(playerShipBitmap, playerShipXCord, playerShipYCord, mPaint);
-
-
-                //Update and draw Enemys
-                mPaint.setColor(Color.WHITE);
-                List<EnemyShips> enemysToRemove = new ArrayList<>();
-                //All Enemys destroyed if yes end game
-                if (enemies.isEmpty()) {
-
-                } else {
-                    for (EnemyShips enemyShip : enemies){
-                        if (enemyShip.lives <= 0){
-                            enemysToRemove.add(enemyShip);
-                        } else {
-                            canvas.drawBitmap(enemyShipBitmap, enemyShip.x,enemyShip.y , mPaint);
-                        }
-                    }
-                }
-
                 enemies.removeAll(enemysToRemove);
 
                 // Update and draw projectiles
                 mPaint.setColor(Color.WHITE);
-                List<Projectile> projectilesToRemove = new ArrayList<>();
+                List<Projectile> playerProjectilesToRemove = new ArrayList<>();
                 for (Projectile projectile : projectiles) {
                     projectile.update();
-
-                    //HitDetection
+                    //HitDetection for enemies
                     for (EnemyShips enemyShip : enemies) {
                         if (enemyShip.isHitBy(projectile)) {
                             enemyShip.lives--; // Reduce enemy ship's lives
-                            projectilesToRemove.add(projectile); // Remove the projectile
+                            playerProjectilesToRemove.add(projectile); // Remove the projectile
                             break; // No need to check other enemies for this projectile
                         }
                     }
-
                     if (projectile.y + projectile.height < 0) {
-                        projectilesToRemove.add(projectile);
+                        playerProjectilesToRemove.add(projectile);
                     } else {
                         canvas.drawBitmap(playerProjectileBitmap, projectile.x,projectile.y , mPaint);
                     }
                 }
-                projectiles.removeAll(projectilesToRemove);
-
+                projectiles.removeAll(playerProjectilesToRemove);
 
                 mSurfaceHolder.unlockCanvasAndPost(canvas);
             }

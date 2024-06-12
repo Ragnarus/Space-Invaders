@@ -11,11 +11,5 @@ S
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
 m
 =app/src/main/java/com/example/spaceinvaders/MainActivity.java,f\3\f3b77b8cf96ff67333459ff377167d2eb21a3515
-t
-Dapp/src/main/java/com/example/spaceinvaders/StartScreenFragment.java,1\5\1597a7764a784dd4221df3d8d92034d3d9d9984d
-u
-Eapp/src/main/java/com/example/spaceinvaders/StartScreenViewModel.java,2\b\2b5a7f4866e63fe220204aacc52a6d9842dc19ea
-|
-Lapp/src/main/java/com/example/spaceinvaders/StartScreenViewModelFactory.java,0\a\0ab5262ff67ddae01d5a50e3a7cb64d557209cf8
 k
 ;app/src/main/java/com/example/spaceinvaders/Projectile.java,3\b\3b08a29afc40e41b8cd824a5e071b93f5ae82274

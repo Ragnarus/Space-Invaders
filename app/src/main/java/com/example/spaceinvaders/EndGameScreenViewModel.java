@@ -14,8 +14,8 @@ public class EndGameScreenViewModel extends ViewModel {
     private final MutableLiveData<String> score = new MutableLiveData<>();
     private final MutableLiveData<String> won = new MutableLiveData<>();
 
-    public EndGameScreenViewModel(String score, boolean won) {
-
+    public EndGameScreenViewModel(String score, boolean won, NavigationCommand navigationCommand) {
+        this.navigationCommand = navigationCommand;
         this.score.setValue(score);
         if (won) {
             this.won.setValue("You won");
