@@ -21,6 +21,10 @@ public class GameScreenFragment extends Fragment {
 
     }
 
+    public void onGameEnd() {
+        //TODO
+    }
+
 
     @Override
     public void onPause() {
@@ -30,7 +34,6 @@ public class GameScreenFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         panel.resume();
     }
 
