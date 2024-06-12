@@ -22,6 +22,10 @@ public class GameScreenFragment extends Fragment {
 
     }
 
+    public void onGameEnd() {
+        //TODO
+    }
+
 
     @Override
     public void onPause() {
