@@ -1,10 +1,13 @@
 package com.example.spaceinvaders;
 
-public class Projectile {
-    public float x, y, width, height;
+public class PlayerProjectile {
+    public float x;
+    public float y;
+    public float width;
+    public float height;
     public float speedY;
 
-    public Projectile(float x, float y, float width, float height, float speedY) {
+    public PlayerProjectile(float x, float y, float width, float height, float speedY) {
         this.x = x;
         this.y = y;
         this.width = width;

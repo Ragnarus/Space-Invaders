@@ -55,7 +55,7 @@
             android:id="@+id/ContinueBtn"
             android:layout_width="200sp"
             android:layout_height="wrap_content"
-            android:text="@string/continue"
+            android:text="@string/ontinue"
             android:layout_gravity="center"
             android:layout_marginTop="200sp"
             style="@style/RoundedButton"
