@@ -21,3 +21,5 @@ P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 w
 Gapp/src/main/java/com/example/spaceinvaders/EndGameScreenViewModel.java,0\6\069de8a26d7126f93bff7358eecb4aa9ade31c2b
+s
+Capp/src/main/java/com/example/spaceinvaders/GameScreenFragment.java,5\2\52fc3b0cadcf211692e620d50d163613f1668465

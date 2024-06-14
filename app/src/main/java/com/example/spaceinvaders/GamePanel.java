@@ -18,6 +18,7 @@ import android.view.SurfaceView;
 import android.view.ViewTreeObserver;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GamePanel extends SurfaceView implements Runnable, SensorEventListener {
     //TODO use Accelometer
@@ -46,10 +47,12 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
 
     //Projectile Properties
     private List<PlayerProjectile> playerProjectiles;
+    private List<EnemyProjectile> enemyProjectiles;
     private static final float PROJECTILE_WIDTH = 20;
     private static final float PROJECTILE_HEIGHT = 40;
     private static final float PROJECTILE_SPEED = 20;
     private Bitmap  playerProjectileBitmap;
+    private Bitmap  enemyProjectileBitmap;
 
     //Enemy Properties
     private List<EnemyShips> enemies;
@@ -57,7 +60,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
     private static final float ENEMY_HEIGHT = 103;
     private Bitmap  enemyShipBitmap;
     private static  int ENEMYCOUNT;
-    private static final int MAX_ENEMY_COUNT = 1;
+    private static final int MAX_ENEMY_COUNT = 5;
 
     private static  final int MAX_ENEMY_PER_ROW = 5;
     private static  final int ENEMY_LIVES = 1;
@@ -104,6 +107,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
 
         score = 0;
         playerProjectiles = new ArrayList<>();
+        enemyProjectiles = new ArrayList<>();
         enemies = new ArrayList<>();
         ENEMYCOUNT = 0;
         currentPlayerLives = MAX_PLAYER_Lives;
@@ -115,7 +119,10 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
 
         Bitmap enemyShipBitmapToScale = BitmapFactory.decodeResource(getResources(), R.drawable.enemyshipidle);
         enemyShipBitmap = Bitmap.createScaledBitmap(enemyShipBitmapToScale, 100, 100, true);
+        enemyProjectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.enemyprojectile);
 
+
+        resume();
         // Get the screen dimensions
         ViewTreeObserver vto = getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -124,12 +131,13 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                 getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 screenWidth = getWidth();
                 screenHeight = getHeight();
-                playerShip.x = (screenWidth/2 )- playerShipSizex;
-                playerShip.y = screenHeight - playerShipSizey - 200;//200 = Abstand zum "boden"
+                float x = (screenWidth / 2) - playerShipSizex;
+                float y = screenHeight - playerShipSizey - 200;//200 = Abstand zum "boden"
+                playerShip = new PlayerShip(x,y,playerShipSizex,playerShipSizey, MAX_PLAYER_Lives);
             }
         });
 
-        resume();
+
     }
 
     // Initialisierung der feindlichen Schiffe
@@ -155,7 +163,9 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
         float x = distance;
 
         for (int i = 1; i <= ENEMYCOUNT; i++) {
-            enemies.add(new EnemyShips(x,y,ENEMY_WIDTH,ENEMY_HEIGHT, ENEMY_LIVES));
+            EnemyShips ship =new EnemyShips((int)x,y,ENEMY_WIDTH,ENEMY_HEIGHT, ENEMY_LIVES);
+            ship.setBorders((int)(ship.x + (distance / 2)),(int)(ship.x - (distance / 2)));
+            enemies.add(ship);
 
             if (i <= MAX_ENEMY_PER_ROW){
                 x += ENEMY_WIDTH + distance;
@@ -170,7 +180,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
         }
     }
 
-    //TODO:  Enemy projectiles and enemy movement logic and animation
+    //TODO:  Enemy  movement  animation
     @Override
     public void run() {
         while (mRunning) {
@@ -184,7 +194,7 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                 canvas.drawColor(Color.BLACK);
 
                 // Update player position based on sensor data
-                playerShip.x += xRotationRate * shipMovementSpeed;  // Modify as needed
+                playerShip.x += xRotationRate * shipMovementSpeed;
                 if (playerShip.x < 0) {
                     playerShip.x = 0;
                 }
@@ -192,7 +202,6 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                     playerShip.x = screenWidth - playerShipSizex;
                 }
                 if (currentPlayerLives <= 0){
-                    //TODO endgame and tell endgameFrag if lose or win
                     comTool.gameHasEnded(false,score);
                 }
                 canvas.drawBitmap(playerShipBitmap, playerShip.x, playerShip.y, mPaint);
@@ -206,6 +215,17 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
 
                 } else {
                     for (EnemyShips enemyShip : enemies){
+                        enemyShip.update();
+                        Random shootChance = new Random();
+
+                        //shoot enemy projectiles
+                        int chance = shootChance.nextInt(100);
+                        if (chance == 1){
+                            float projectileX = enemyShip.x + (float)(ENEMY_WIDTH / 2) - (PROJECTILE_WIDTH / 2) +10;
+                            float projectileY = enemyShip.y + PROJECTILE_HEIGHT;
+                            enemyProjectiles.add(new EnemyProjectile(projectileX, projectileY, PROJECTILE_WIDTH, PROJECTILE_HEIGHT, PROJECTILE_SPEED));
+                        }
+
                         if (enemyShip.lives <= 0){
                             enemysToRemove.add(enemyShip);
                         } else {
@@ -215,11 +235,37 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                 }
                 enemies.removeAll(enemysToRemove);
 
-                // Update and draw projectiles
+                // Update and draw enemy projectiles
+                mPaint.setColor(Color.WHITE);
+                List<EnemyProjectile> enemyProjectilesToRemove = new ArrayList<>();
+                List<EnemyProjectile> copyOfEnemyprojectiles = new ArrayList<>(enemyProjectiles);
+                for (EnemyProjectile enemyProjectile : copyOfEnemyprojectiles) {
+                    enemyProjectile.update();
+
+                    //HitDetection for player
+                    if (playerShip.isHitBy(enemyProjectile)) {
+                        playerShip.loseLife(); // Reduce enemy ship's lives
+                        if (playerShip.lives <= 0){
+                            comTool.gameHasEnded(false,score);
+                        }
+                        enemyProjectilesToRemove.add(enemyProjectile); // Remove the projectile
+                        break; // No need to check other enemies for this projectile
+                    }
+
+                    if (enemyProjectile.y + enemyProjectile.height < 0) {
+                        enemyProjectilesToRemove.add(enemyProjectile);
+                    } else {
+                        canvas.drawBitmap(enemyProjectileBitmap, enemyProjectile.x, enemyProjectile.y , mPaint);
+                    }
+                }
+                enemyProjectiles.removeAll(enemyProjectilesToRemove);
+
+
+                // Update and draw player projectiles
                 mPaint.setColor(Color.WHITE);
                 List<PlayerProjectile> playerProjectilesToRemove = new ArrayList<>();
-                List<PlayerProjectile> copyOfprojectiles = new ArrayList<>(playerProjectiles);
-                for (PlayerProjectile playerProjectile : copyOfprojectiles) {
+                List<PlayerProjectile> copyOfPlayerprojectiles = new ArrayList<>(playerProjectiles);
+                for (PlayerProjectile playerProjectile : copyOfPlayerprojectiles) {
                     playerProjectile.update();
                     //HitDetection for enemies
                     for (EnemyShips enemyShip : enemies) {
@@ -237,6 +283,8 @@ public class GamePanel extends SurfaceView implements Runnable, SensorEventListe
                     }
                 }
                 playerProjectiles.removeAll(playerProjectilesToRemove);
+
+
                 if (enemies.isEmpty()){
                     initializeEnemies();
                 }
