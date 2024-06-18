@@ -8,4 +8,6 @@
     <string name="options">Options</string>
     <string name="about">About</string>
     <string name="close">Close</string>
+    <string name="ontinue">Continue</string>
+    <string name="your_score_is">Your score is :</string>
 </resources>
