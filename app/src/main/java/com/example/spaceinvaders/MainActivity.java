@@ -9,12 +9,12 @@ import androidx.lifecycle.ViewModel;
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-
+//TODO multiplayer, maybe add menu bar in gamescreenfragment_layout for score and menu, add a better background and better ui
 public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
-    private ViewModel startScreenVM;
+
 
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
        fragmentManager = getSupportFragmentManager();
        transaction = fragmentManager.beginTransaction();
        transaction.setReorderingAllowed(true).replace(R.id.fragmentContainer, StartScreenFragment.class, null).commit();
-
-
     }
 
 

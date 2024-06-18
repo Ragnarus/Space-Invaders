@@ -9,8 +9,6 @@ S
 #.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
 ]
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
-m
-=app/src/main/java/com/example/spaceinvaders/MainActivity.java,f\3\f3b77b8cf96ff67333459ff377167d2eb21a3515
 |
 Lapp/src/main/java/com/example/spaceinvaders/StartScreenViewModelFactory.java,0\a\0ab5262ff67ddae01d5a50e3a7cb64d557209cf8
 u
@@ -23,3 +21,9 @@ w
 Gapp/src/main/java/com/example/spaceinvaders/EndGameScreenViewModel.java,0\6\069de8a26d7126f93bff7358eecb4aa9ade31c2b
 s
 Capp/src/main/java/com/example/spaceinvaders/GameScreenFragment.java,5\2\52fc3b0cadcf211692e620d50d163613f1668465
+~
+Napp/src/main/java/com/example/spaceinvaders/EndGameScreenViewModelFactory.java,d\d\dd7f36fb29cb26f1276729cacd6c230a27aa5669
+k
+;app/src/main/java/com/example/spaceinvaders/PlayerShip.java,1\c\1c842151ebb5c08133aaa52cfa4791e0ec8bc063
+v
+Fapp/src/main/java/com/example/spaceinvaders/EndGameScreenFragment.java,7\9\79fbcac336d1c03378f6ba821e8d011d5b2490c7

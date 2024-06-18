@@ -34,6 +34,15 @@
                     />
 
                 <Button
+                    android:id="@+id/multyplayerBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RoundedButton"
+                    android:text="Multiplayer"
+                    android:onClick="@{() -> viewModel.onClick(1)}"
+                    />
+
+                <Button
                     android:id="@+id/highscoreBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -1,8 +1,6 @@
 
 x
 Happ/src/main/java/com/example/spaceinvaders/HighscoreScreenFragment.java,e\7\e7acbed9a44badd529ed1d0a78db80f6978fbb67
-m
-=app/src/main/java/com/example/spaceinvaders/MainActivity.java,f\3\f3b77b8cf96ff67333459ff377167d2eb21a3515
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 Å
@@ -23,3 +21,9 @@ P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 s
 Capp/src/main/java/com/example/spaceinvaders/GameScreenFragment.java,5\2\52fc3b0cadcf211692e620d50d163613f1668465
+~
+Napp/src/main/java/com/example/spaceinvaders/EndGameScreenViewModelFactory.java,d\d\dd7f36fb29cb26f1276729cacd6c230a27aa5669
+v
+Fapp/src/main/java/com/example/spaceinvaders/EndGameScreenFragment.java,7\9\79fbcac336d1c03378f6ba821e8d011d5b2490c7
+k
+;app/src/main/java/com/example/spaceinvaders/PlayerShip.java,1\c\1c842151ebb5c08133aaa52cfa4791e0ec8bc063
