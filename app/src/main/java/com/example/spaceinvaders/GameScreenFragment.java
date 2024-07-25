@@ -49,7 +49,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
     private int screenWidth;
     private int screenHeight;
     private boolean isInitialized = false; // New flag to check initialization
-    private double sensorThreshold = 0.5;
+    private double sensorThreshold = 1;
     private Button settingsBtn, inGameResumeBtn;
     private LinearLayout inGameOptionsLayout;
     private TextView scoreTV;
@@ -135,6 +135,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
         sensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        //Initialize Projectiles and Enemyships
         playerProjectiles = new ArrayList<>();
         enemyProjectiles = new ArrayList<>();
         enemies = new ArrayList<>();
@@ -168,6 +169,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
 
     @Override
     public void onPause() {
+        //OnPause
         super.onPause();
         sensorManager.unregisterListener(this);
         mRunning = false;
@@ -185,6 +187,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
 
     @Override
     public void onResume() {
+        //OnResume
         super.onResume();
         mRunning = true;
         mThread = new Thread(this);
@@ -195,6 +198,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
     }
 
     public void onGamePause() {
+        //Method pauses game and joins the game thread is called when ingameoptions are called
         sensorManager.unregisterListener(this);
         mRunning = false;
         boolean retry = true;
@@ -209,6 +213,8 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
     }
 
     public void onGameResume() {
+        //Method resumes the game and starts the game thread is called when continue is pressed
+
         mRunning = true;
         mThread = new Thread(this);
         mThread.start();
@@ -218,11 +224,13 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
     }
 
     public void updateScore() {
+        //updates score
         requireActivity().runOnUiThread(() -> scoreTV.setText("" + score));
     }
 
     @Override
     public void gameHasEnded(boolean won, int score) {
+        //If game has ended replaces this fragment with endGameScreenFragment
         EndGameScreenFragment endGameScreenFragment = EndGameScreenFragment.newInstance(score, won);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, endGameScreenFragment).commit();
@@ -231,7 +239,6 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
     @Override
     public void onSensorChanged(SensorEvent event) {
         //Method for is for controling the playership through the Accellerometer
-
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             if (event.values[0] > sensorThreshold || event.values[0] < - sensorThreshold ){
                 if (event.values[0] > 2){
@@ -243,7 +250,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
                 xAcceleration = 0;
             }
 
-            Log.d("MyTest","" + xAcceleration);
+            Log.d("MyTest","" + event.values[0]);
         }
     }
 
@@ -255,7 +262,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
 
     public boolean onGamePanelTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            // Fire a projectile
+            // Fire a projectile on tap event
             float projectileX = playerShip.x + (PlayerShip.WIDTH / 2) - (Projectile.PROJECTILE_WIDTH / 2) +10;
             float projectileY = playerShip.y - Projectile.PROJECTILE_HEIGHT;
             playerProjectiles.add(new PlayerProjectile(projectileX, projectileY));
@@ -267,14 +274,19 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
     @Override
     public void run() {
         while (mRunning) {
+            /*this is the main Game Loop this Method it handles the logic and call gamepanel to draw the objects*/
 
+            if (!isInitialized){
+                //if the view is not initialized skipp loop
+                continue;
+            }
+
+            // These List are the draw queue
             ArrayList<Float> xDraw = new ArrayList<>();
             ArrayList<Float> yDraw = new ArrayList<>();
             ArrayList<Bitmap> bitMapDraw = new ArrayList<>();
 
-            if (!isInitialized){
-                continue;
-            }
+
 
             // Update player position based on sensor data
             playerShip.x += xAcceleration * playerShip.speed;
@@ -375,23 +387,27 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
             }
             playerProjectiles.removeAll(playerProjectilesToRemove);
 
+            // Calls initEnemies if all enemies are dead the method handles the Enemy spawn
             if (enemies.isEmpty()){
                 initializeEnemies();
             }
 
+            // Drawing panel does the drawing
             panel.draw(xDraw, yDraw,bitMapDraw);
         }
     }
 
 
         private void initializeEnemies() {
-            //Enemy Init
+
+            // This method handles the Enemy spawn and checks if one of the endings (All Enemys have been defeated) has been achieved
             if (enemycount < MAX_ENEMY_COUNT){
                 enemycount +=1;
             } else {
                 gameHasEnded(true,score);
             }
 
+            //Checks how many rows of enemys are there
             float[] enemyDistancePerRow;
             if (enemycount % MAX_ENEMY_PER_ROW + 1 == 0){
                 enemyDistancePerRow = new float[enemycount /5];
@@ -399,6 +415,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
                 enemyDistancePerRow = new float[(enemycount /5) + 1];
             }
 
+            //Calculates distances that should be between enemys
             for (int i = 0; i < enemyDistancePerRow.length ; i++){
                 if (i == enemyDistancePerRow.length - 1){
                     int howManyEnemiesAreInSameRow = enemycount % 5; // cause there are can be 5 enemys in a row
@@ -409,6 +426,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
                 }
             }
 
+            //Enemy spawning
             float lastShipPositionX = 0;
             int rowCount = 0;
             for (int i = 1; i <= enemycount; i++) {

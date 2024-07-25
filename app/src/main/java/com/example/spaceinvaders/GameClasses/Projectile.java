@@ -3,7 +3,7 @@ package com.example.spaceinvaders.GameClasses;
 public abstract class Projectile {
     public static final float PROJECTILE_WIDTH = 20;
     public static final float PROJECTILE_HEIGHT = 40;
-    public static final float PROJECTILE_SPEED = 20;
+    public static final float PROJECTILE_SPEED = 10;
 
     public float x;
     public float y;

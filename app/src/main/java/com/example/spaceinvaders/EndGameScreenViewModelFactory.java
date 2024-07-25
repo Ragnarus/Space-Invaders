@@ -3,6 +3,7 @@ package com.example.spaceinvaders;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+//wurde von chatgpt erstellt
 
 public class EndGameScreenViewModelFactory implements ViewModelProvider.Factory {
 

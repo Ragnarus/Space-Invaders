@@ -43,10 +43,6 @@ public class GamePanel extends SurfaceView {
         mContext = context;
     }
 
-    public interface ComTool {
-        void gameHasEnded(boolean won, int score);
-    }
-
     public void setComTool(GameScreenFragment fragment) {
         this.fragment = fragment;
     }
@@ -58,6 +54,7 @@ public class GamePanel extends SurfaceView {
     }
 
     public void draw(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Bitmap> bitmap){
+        //Draws the objects which are supplied in the gamescreenfragment in the run method
         Canvas canvas = mSurfaceHolder.lockCanvas();
         if (canvas != null) {
             canvas.drawColor(Color.BLACK);
