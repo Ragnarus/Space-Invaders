@@ -13,17 +13,11 @@ u
 Eapp/src/main/java/com/example/spaceinvaders/StartScreenViewModel.java,2\b\2b5a7f4866e63fe220204aacc52a6d9842dc19ea
 |
 Lapp/src/main/java/com/example/spaceinvaders/StartScreenViewModelFactory.java,0\a\0ab5262ff67ddae01d5a50e3a7cb64d557209cf8
-t
-Dapp/src/main/java/com/example/spaceinvaders/StartScreenFragment.java,1\5\1597a7764a784dd4221df3d8d92034d3d9d9984d
 w
 Gapp/src/main/java/com/example/spaceinvaders/EndGameScreenViewModel.java,0\6\069de8a26d7126f93bff7358eecb4aa9ade31c2b
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
-s
-Capp/src/main/java/com/example/spaceinvaders/GameScreenFragment.java,5\2\52fc3b0cadcf211692e620d50d163613f1668465
 ~
 Napp/src/main/java/com/example/spaceinvaders/EndGameScreenViewModelFactory.java,d\d\dd7f36fb29cb26f1276729cacd6c230a27aa5669
 v
 Fapp/src/main/java/com/example/spaceinvaders/EndGameScreenFragment.java,7\9\79fbcac336d1c03378f6ba821e8d011d5b2490c7
-k
-;app/src/main/java/com/example/spaceinvaders/PlayerShip.java,1\c\1c842151ebb5c08133aaa52cfa4791e0ec8bc063
