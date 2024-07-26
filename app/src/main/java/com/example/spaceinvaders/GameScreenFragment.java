@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Random;
 
 @SuppressLint("SetTextI18n")
-public class GameScreenFragment extends Fragment implements GamePanel.ComTool, SensorEventListener, Runnable {
+public class GameScreenFragment extends Fragment implements  SensorEventListener, Runnable {
 
     //Variables
     //Sensor
@@ -228,7 +228,7 @@ public class GameScreenFragment extends Fragment implements GamePanel.ComTool, S
         requireActivity().runOnUiThread(() -> scoreTV.setText("" + score));
     }
 
-    @Override
+
     public void gameHasEnded(boolean won, int score) {
         //If game has ended replaces this fragment with endGameScreenFragment
         EndGameScreenFragment endGameScreenFragment = EndGameScreenFragment.newInstance(score, won);

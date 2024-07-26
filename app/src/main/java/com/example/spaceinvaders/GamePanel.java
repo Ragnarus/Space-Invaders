@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class GamePanel extends SurfaceView {
@@ -53,7 +54,7 @@ public class GamePanel extends SurfaceView {
         mPaint.setColor(Color.DKGRAY);
     }
 
-    public void draw(ArrayList<Float> x, ArrayList<Float> y, ArrayList<Bitmap> bitmap){
+    public void draw(List<Float> x, List<Float> y, List<Bitmap> bitmap){
         //Draws the objects which are supplied in the gamescreenfragment in the run method
         Canvas canvas = mSurfaceHolder.lockCanvas();
         if (canvas != null) {
