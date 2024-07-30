@@ -47,7 +47,6 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
         }
         userDAO = new UserDAO(getContext());
         userDAO.open();
-        nameInput = nameInput.findViewById(R.id.playernameEditText);
     }
 
     @Nullable
@@ -57,6 +56,7 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
         viewModel = new ViewModelProvider(this, new EndGameScreenViewModelFactory(String.valueOf(score),won, this)).get(EndGameScreenViewModel.class);
         binding.setVM(viewModel);
         binding.setLifecycleOwner(this);
+        nameInput = binding.playernameEditText;
         return binding.getRoot();
     }
 

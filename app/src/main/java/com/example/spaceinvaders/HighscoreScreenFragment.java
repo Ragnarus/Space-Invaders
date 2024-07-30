@@ -1,64 +1,69 @@
 package com.example.spaceinvaders;
 
+import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HighscoreScreenFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class HighscoreScreenFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private UserDAO userDAO;
+    private TextView resultView;
+    private Button back;
     public HighscoreScreenFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HighscoreScreenFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HighscoreScreenFragment newInstance(String param1, String param2) {
-        HighscoreScreenFragment fragment = new HighscoreScreenFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        userDAO = new UserDAO(getContext());
+        userDAO.open();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_highscore_screen, container, false);
+        View view = inflater.inflate(R.layout.fragment_highscore_screen, container, false);
+        resultView = view.findViewById(R.id.resultView);
+        back = view.findViewById(R.id.backbutton);
+
+        back.setOnClickListener(v -> {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragmentContainer, StartScreenFragment.class, null).commit();
+        });
+
+        displayAllUsers();
+        return view;
+    }
+
+    private void displayAllUsers() {
+        Cursor cursor = userDAO.getAllUsers();
+        StringBuilder result = new StringBuilder();
+        int id = 1;
+        while (cursor.moveToNext()) {
+            //int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_NAME));
+            int score = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_SCORE));
+            result.append(id).append(": ").append(name).append(" - ").append(score).append("\n");
+            id++;
+        }
+        resultView.setText(result.toString());
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Close the database
+        if (userDAO != null) {
+            userDAO.close();
+        }
     }
 }
