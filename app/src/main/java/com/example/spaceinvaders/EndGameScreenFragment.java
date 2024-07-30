@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import com.example.spaceinvaders.databinding.FragmentEndGameScreenBinding;
 
 
@@ -21,6 +24,8 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
     private boolean won;
     private FragmentEndGameScreenBinding binding;
     private EndGameScreenViewModel viewModel;
+    private EditText nameInput;
+    UserDAO userDAO;
 
     public EndGameScreenFragment() {}
 
@@ -40,6 +45,9 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
             score = getArguments().getInt("score");
             won = getArguments().getBoolean("won");
         }
+        userDAO = new UserDAO(getContext());
+        userDAO.open();
+        nameInput = nameInput.findViewById(R.id.playernameEditText);
     }
 
     @Nullable
@@ -53,9 +61,10 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
     }
 
     public void continueToStartScreen(){
+        String name = nameInput.getText().toString();
+        userDAO.insertUser(name, score);
+        userDAO.close();
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, StartScreenFragment.class, null).commit();
     }
-
-
 }
