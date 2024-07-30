@@ -80,22 +80,9 @@ public class UserDAO {
                 null, null, null, null, DatabaseHelper.COLUMN_SCORE+" DESC");
     }
 
-
-    // Delete
-    public void deleteUser(int id) {
-        database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
-    }
-
-    // Delete user with the lowest score, and if there are ties, the one with the highest ID (most recently added)
-    public void deleteUserWithLowestScore() {
-        Cursor cursor = database.query(DatabaseHelper.TABLE_NAME, allColumns,
-                null, null, null, null, DatabaseHelper.COLUMN_SCORE + " ASC, " + DatabaseHelper.COLUMN_ID + " DESC", "1");
-
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID));
-            database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
-            cursor.close();
-        }
+    // Lösche alle Benutzer
+    public void deleteAllUsers() {
+        database.delete(DatabaseHelper.TABLE_NAME, null, null);
     }
 }
 
