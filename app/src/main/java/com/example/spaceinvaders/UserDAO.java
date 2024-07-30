@@ -80,13 +80,6 @@ public class UserDAO {
                 null, null, null, null, DatabaseHelper.COLUMN_SCORE+" DESC");
     }
 
-    // Update
-    public void updateUser(int id, String name, int score) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_NAME, name);
-        values.put(DatabaseHelper.COLUMN_SCORE, score);
-        database.update(DatabaseHelper.TABLE_NAME, values, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
-    }
 
     // Delete
     public void deleteUser(int id) {

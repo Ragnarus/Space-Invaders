@@ -11,10 +11,22 @@
         android:background="@color/black"
         android:orientation="vertical"
         >
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Highscore"
+            android:layout_marginTop="20sp"
+            android:textAlignment="center"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/resultView"
             android:layout_width="match_parent"
-            android:layout_height="681dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
             android:text="@string/hello_blank_fragment"
             android:textAlignment="center"
             android:textSize="34sp" />
@@ -23,6 +35,7 @@
             android:id="@+id/backbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
             android:text="Back" />
 
     </LinearLayout>
