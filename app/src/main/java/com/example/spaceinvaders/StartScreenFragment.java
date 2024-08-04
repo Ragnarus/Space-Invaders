@@ -38,7 +38,8 @@ public class StartScreenFragment extends Fragment implements StartScreenViewMode
                 transaction.replace(R.id.fragmentContainer, GameScreenFragment.class, null).commit();
                 break;
             case 1:
-                transaction.replace(R.id.fragmentContainer, MultiplayerLobbyFragment.class, null).commit();
+                //transaction.replace(R.id.fragmentContainer, MultiplayerLobbyFragment.class, null).commit();
+                transaction.replace(R.id.fragmentContainer, MultiplayerGameScreenFragment.class, null).commit();
                 break;
             case 2:
                 transaction.replace(R.id.fragmentContainer, HighscoreScreenFragment.class, null).commit();
