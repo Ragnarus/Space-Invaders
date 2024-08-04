@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,7 @@ import android.widget.TextView;
 import com.example.spaceinvaders.databinding.FragmentEndGameScreenBinding;
 
 
-public class EndGameScreenFragment extends Fragment implements EndGameScreenViewModel.NavigationCommand{
+public class EndGameScreenFragment extends Fragment implements EndGameScreenViewModel.NavigationCommand {
 
     private int score;
     private boolean won;
@@ -35,12 +37,14 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
         args.putInt("score", score);
         args.putBoolean("won", won);
         fragment.setArguments(args);
+        Log.e("EndGameScreenFragment", "In newInstance");
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("EndGameScreenFragment", "In onCreate");
         if (getArguments() != null) {
             score = getArguments().getInt("score");
             won = getArguments().getBoolean("won");
@@ -55,8 +59,9 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_end_game_screen, container, false);
         viewModel = new ViewModelProvider(this, new EndGameScreenViewModelFactory(String.valueOf(score),won, this)).get(EndGameScreenViewModel.class);
         binding.setVM(viewModel);
-        binding.setLifecycleOwner(this);
+        binding.setLifecycleOwner(getViewLifecycleOwner());  // Verwendung des ViewLifecycleOwner
         nameInput = binding.playernameEditText;
+        Log.e("EndGameScreenFragment", "In onCreateView");
         return binding.getRoot();
     }
 
@@ -64,7 +69,9 @@ public class EndGameScreenFragment extends Fragment implements EndGameScreenView
         String name = nameInput.getText().toString();
         userDAO.insertUser(name, score);
         userDAO.close();
+        Log.d("EndGameScreenFragment", "User data inserted and DAO closed. Continuing to StartScreenFragment.");
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragmentContainer, StartScreenFragment.class, null).commit();
+        Log.d("EndGameScreenFragment", "Fragment transaction committed.");
     }
 }

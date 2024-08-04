@@ -10,4 +10,7 @@
     <string name="close">Close</string>
     <string name="ontinue">Continue</string>
     <string name="your_score_is">Your score is :</string>
+    <string name="AboutText">Space Invaders is a classic arcade game where players control a spaceship to defend Earth from waves of alien invaders. Originally released in 1978, it remains one of the most influential games in video game history.</string>
+    <string name="AboutText2">Features: Simple controls and gameplay, Endless waves of alien enemies, Increasing difficulty and multiplayer.</string>
+    <string name="AboutText3">Programmed by us for our school project in AppDevelopment.</string>
 </resources>
