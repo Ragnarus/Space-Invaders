@@ -27,27 +27,39 @@ public class MultiplayerServerScreenFragment extends Fragment {
             try {
                 socketHandler = new SocketHandler();
                 socketHandler.startServer(12345); // Port-Nummer
-                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Server started", Toast.LENGTH_SHORT).show());
+                ServerStart();
 
                 // Start receiving messages
                 socketHandler.receiveMessages(message -> getActivity().runOnUiThread(() ->
-                        Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show()
+                        getmessage(message)
                 ));
-
-                getActivity().runOnUiThread(() -> {
-                    sendButton.setOnClickListener(v -> {
-                        String message = messageInput.getText().toString();
-                        new SendMessageTask(socketHandler).execute(message); // Verwenden Sie AsyncTask zum Senden der Nachricht
-                        Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
-                    });
-                });
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
 
+        sendButton.setOnClickListener(v -> {
+            String message = messageInput.getText().toString();
+            sendmessage(message);
+        });
+
         return  view;
+    }
+
+    public void ServerStart(){
+        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Server started", Toast.LENGTH_SHORT).show());
+        String message1 = "Start";
+        new SendMessageTask(socketHandler).execute(message1);
+    }
+
+    public void getmessage(String message){
+        Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show();
+    }
+
+    public void sendmessage(String message){
+        new SendMessageTask(socketHandler).execute(message); // Verwenden Sie AsyncTask zum Senden der Nachricht
+        Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
     }
 
     @Override

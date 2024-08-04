@@ -33,25 +33,31 @@ public class MultiplayerClientScreenFragment extends Fragment {
                 socketHandler = new SocketHandler();
                 socketHandler.connectToServer(ipAddress, 12345); // IP-Adresse und Port des Servers
 
-                getActivity().runOnUiThread(() -> {
-                    sendButton.setOnClickListener(v -> {
-                        String message = messageInput.getText().toString();
-                        new SendMessageTask(socketHandler).execute(message); // Verwenden Sie AsyncTask zum Senden der Nachricht
-                        Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
-                    });
 
-                    // Start receiving messages
-                    socketHandler.receiveMessages(message -> getActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show()
-                    ));
-                });
+                // Start receiving messages
+                socketHandler.receiveMessages(message -> getActivity().runOnUiThread(() ->
+                        getmessage(message)
+                ));
+
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
 
+        sendButton.setOnClickListener(v -> {
+            String message = messageInput.getText().toString();
+            sendmessage(message);
+        });
 
         return view;
+    }
+    public void getmessage(String message){
+        Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show();
+    }
+
+    public void sendmessage(String message){
+        new SendMessageTask(socketHandler).execute(message); // Verwenden Sie AsyncTask zum Senden der Nachricht
+        Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
     }
 }
