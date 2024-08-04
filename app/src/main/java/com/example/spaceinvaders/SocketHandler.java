@@ -1,4 +1,6 @@
 package com.example.spaceinvaders;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -50,11 +52,42 @@ public class SocketHandler {
     }
 
     // Close resources
-    public void close() throws Exception {
-        if (in != null) in.close();
-        if (out != null) out.close();
-        if (clientSocket != null) clientSocket.close();
-        if (serverSocket != null) serverSocket.close();
+    public void close(){
+        Log.e("SocketHandler", "in is: " +in);
+        if (in != null) {
+            Log.e("SocketHandler", "in is null");
+            try {
+                in = null;
+                Log.e("SocketHandler", "close input stream");
+            } catch (Exception e) {
+                Log.e("SocketHandler", "Failed to close input stream: " + e.getMessage());
+            }
+        }
+        if (out != null) {
+            Log.e("SocketHandler", "out is null");
+            try {
+                out= null;
+                Log.e("SocketHandler", "close output stream:");
+            } catch (Exception e) {
+                Log.e("SocketHandler", "Failed to close output stream: " + e.getMessage());
+            }
+        }
+        if (clientSocket != null) {
+            try {
+                clientSocket.close();
+                Log.e("SocketHandler", "close client socket");
+            } catch (Exception e) {
+                Log.e("SocketHandler", "Failed to close client socket: " + e.getMessage());
+            }
+        }
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+                Log.e("SocketHandler", "close server socket");
+            } catch (Exception e) {
+                Log.e("SocketHandler", "Failed to close server socket: " + e.getMessage());
+            }
+        }
     }
 
     public interface MessageListener {

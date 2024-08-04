@@ -9,10 +9,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical">-
 
 
-        <com.example.spaceinvaders.MultiplayerGamePanel
+        <com.example.spaceinvaders.MultiplayerServerGamePanel
             android:id="@+id/gamepanel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
