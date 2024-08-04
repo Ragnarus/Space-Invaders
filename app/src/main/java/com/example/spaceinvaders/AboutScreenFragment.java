@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -23,7 +24,7 @@ public class AboutScreenFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_about_screen, container, false);
-        TextView link = view.findViewById(R.id.textViewLink);
+        ImageView link = view.findViewById(R.id.imageViewLink);
         link.setOnClickListener(v -> {
             String url = "https://github.com/Ragnarus/Space-Invaders";
             Intent intent = new Intent(Intent.ACTION_VIEW);
