@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.spaceinvaders.Multiplayer.MultiplayerLobbyFragment;
 import com.example.spaceinvaders.databinding.FragmentStartScreenBinding;
 
 
@@ -38,15 +39,19 @@ public class StartScreenFragment extends Fragment implements StartScreenViewMode
                 transaction.replace(R.id.fragmentContainer, GameScreenFragment.class, null).commit();
                 break;
             case 1:
-                transaction.replace(R.id.fragmentContainer, HighscoreScreenFragment.class, null).commit();
+                //transaction.replace(R.id.fragmentContainer, MultiplayerLobbyFragment.class, null).commit();
+                transaction.replace(R.id.fragmentContainer, MultiplayerLobbyFragment.class, null).commit();
                 break;
             case 2:
-                transaction.replace(R.id.fragmentContainer, OptionsScreenFragment.class, null).commit();
+                transaction.replace(R.id.fragmentContainer, HighscoreScreenFragment.class, null).commit();
                 break;
             case 3:
-                transaction.replace(R.id.fragmentContainer, AboutScreenFragment.class, null).commit();
+                transaction.replace(R.id.fragmentContainer, OptionsScreenFragment.class, null).commit();
                 break;
             case 4:
+                transaction.replace(R.id.fragmentContainer, AboutScreenFragment.class, null).commit();
+                break;
+            case 5:
                 getActivity().finishAffinity();
                 break;
         }

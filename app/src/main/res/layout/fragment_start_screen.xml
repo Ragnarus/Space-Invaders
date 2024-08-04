@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     style="@style/RoundedButton"
                     android:text="@string/highscores"
-                    android:onClick="@{() -> viewModel.onClick(1)}"
+                    android:onClick="@{() -> viewModel.onClick(2)}"
                     />
 
                 <Button
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     style="@style/RoundedButton"
                     android:text="@string/options"
-                    android:onClick="@{() -> viewModel.onClick(2)}"
+                    android:onClick="@{() -> viewModel.onClick(3)}"
                     />
 
                 <Button
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     style="@style/RoundedButton"
                     android:text="@string/about"
-                    android:onClick="@{() -> viewModel.onClick(3)}"
+                    android:onClick="@{() -> viewModel.onClick(4)}"
                     />
 
                 <Button
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     style="@style/RoundedButton"
                     android:text="@string/close"
-                    android:onClick="@{() -> viewModel.onClick(4)}"
+                    android:onClick="@{() -> viewModel.onClick(5)}"
                     />
 
         </LinearLayout>
