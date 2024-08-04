@@ -10,4 +10,5 @@
     <string name="close">Close</string>
     <string name="ontinue">Continue</string>
     <string name="your_score_is">Your score is :</string>
+    <string name="AboutText">We created this game for our school project in AppDevelopment.</string>
 </resources>
