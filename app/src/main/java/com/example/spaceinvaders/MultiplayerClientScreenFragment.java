@@ -226,7 +226,7 @@ public class MultiplayerClientScreenFragment extends Fragment implements SensorE
                 break;
         }
 
-        Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show();
     }
 
     public void sendmessage(String message){

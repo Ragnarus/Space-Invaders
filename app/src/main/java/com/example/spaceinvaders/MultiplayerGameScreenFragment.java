@@ -70,7 +70,6 @@ public class MultiplayerGameScreenFragment extends Fragment implements  SensorEv
     private List<EnemyShips> enemies;
     private List<PlayerProjectile> playerProjectiles;
     private List<EnemyProjectile> enemyProjectiles;
-
     // Settings
     private static int enemycount;
     private static final int MAX_ENEMY_COUNT = 10;
