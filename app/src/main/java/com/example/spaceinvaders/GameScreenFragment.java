@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -29,6 +30,8 @@ import com.example.spaceinvaders.GameClasses.EnemyShips;
 import com.example.spaceinvaders.GameClasses.PlayerProjectile;
 import com.example.spaceinvaders.GameClasses.PlayerShip;
 import com.example.spaceinvaders.GameClasses.Projectile;
+import com.example.spaceinvaders.databinding.FragmentGameScreenBinding;
+import com.example.spaceinvaders.databinding.FragmentOptionsScreenBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class GameScreenFragment extends Fragment implements  SensorEventListener
     private SensorManager sensorManager;
     private Sensor accelerometerSensor;
     //Game systems
+    private MainActivity mainActivity;
     private GamePanel panel;
     private int score = 0;
     private boolean mRunning;
@@ -49,14 +53,17 @@ public class GameScreenFragment extends Fragment implements  SensorEventListener
     private int screenWidth;
     private int screenHeight;
     private boolean isInitialized = false; // New flag to check initialization
-    private double sensorThreshold = 1;
+    private double sensorThreshold;
     private Button settingsBtn, inGameResumeBtn;
     private LinearLayout inGameOptionsLayout;
     private TextView scoreTV;
     private ImageView[] lifes;
     private int lifeCount;
-    private SeekBar sensitivity, volume;
-
+    private SeekBar sensitivity;
+    private SeekBar volumeSb;
+    private float volume;
+    private CheckBox volumeCheckBox;
+    private boolean volumeMuted;
 
 
     // Bitmaps for the Player, Enemy and Projectiles
@@ -81,7 +88,10 @@ public class GameScreenFragment extends Fragment implements  SensorEventListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_game_screen, container, false);
-
+        mainActivity = (MainActivity) getActivity();
+        volume = mainActivity.getVolume();
+        volumeMuted = mainActivity.isVolumeMuted();
+        sensorThreshold = mainActivity.getSensitivity();
         //Init the Views for the inGameOptions
         settingsBtn = view.findViewById(R.id.settingsbtn);
         inGameResumeBtn = view.findViewById(R.id.inGameOptionsContinueButton);
@@ -98,26 +108,59 @@ public class GameScreenFragment extends Fragment implements  SensorEventListener
         });
 
 
+        //Seekbar init
         sensitivity = view.findViewById(R.id.sensitivitySeekbar);
-        volume = view.findViewById(R.id.volumeSeekbar);
-        sensitivity.setProgress((int) sensorThreshold * 10);
+        sensitivity.setProgress((int) (sensorThreshold * 10));
         sensitivity.setOnSeekBarChangeListener(
-            new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    sensorThreshold = sensitivity.getProgress() /10d;
-                }
+                new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        sensorThreshold = sensitivity.getProgress() /10d;
+                        mainActivity.setSensitivity(sensorThreshold);
+                    }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        // Do something when the user starts interacting with the SeekBar
+                    }
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // Do something when the user stops interacting with the SeekBar
+                    }
+                });
 
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                    // Do something when the user starts interacting with the SeekBar
-                }
 
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                    // Do something when the user stops interacting with the SeekBar
-                }
-            });
+        volumeSb = view.findViewById(R.id.volumeSeekbar);
+        volumeSb.setMax(100);
+        volumeSb.setProgress((int) volume);
+        volumeSb.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        volume = progress/ 100f;
+                        mainActivity.setVolume(volume);
+                        mainActivity.onVolumeChanged();
+                    }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        // Do something when the user starts interacting with the SeekBar
+                    }
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        // Do something when the user stops interacting with the SeekBar
+                    }
+                });
+
+        //Checkbox init
+        volumeCheckBox = view.findViewById(R.id.volumeCheckBox);
+        volumeCheckBox.setChecked(volumeMuted);
+
+        volumeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            volumeMuted = isChecked;
+            mainActivity.setVolumeMuted(volumeMuted);
+            mainActivity.onVolumeChanged();
+        });
+
+
 
         // Find the GamePanel from the inflated view
         panel = view.findViewById(R.id.gamepanel);
@@ -319,7 +362,7 @@ public class GameScreenFragment extends Fragment implements  SensorEventListener
                     int chance = shootChance.nextInt(100);
                     if (chance == 1){
                         float projectileX = enemyShip.x + (EnemyShips.WIDTH / 2) - (Projectile.PROJECTILE_WIDTH / 2) +10;
-                        float projectileY = enemyShip.y + Projectile.PROJECTILE_HEIGHT;
+                        float projectileY = enemyShip.y + EnemyShips.HEIGHT + Projectile.PROJECTILE_HEIGHT;
                         enemyProjectiles.add(new EnemyProjectile(projectileX, projectileY));
                     }
                     if (enemyShip.lives <= 0){

@@ -1,14 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OptionsScreenFragment">
+    tools:context=".OptionsScreenFragment"
+    android:orientation="vertical"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Options "
+        android:textSize="40sp"
+        style="@style/MenuButton"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Volume "
+            android:textColor="@color/white"
+            android:background="@color/transparentGrey"/>
+
+        <SeekBar
+            android:id="@+id/volumeSeekbar"
+            android:layout_width="200dp"
+            android:layout_height="32dp"
+            android:max="100"/>
+
+        <CheckBox
+            android:id="@+id/volumeCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textSize="24sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Sensitivity "
+            android:textColor="@color/white"
+            android:background="@color/transparentGrey"/>
+
+        <SeekBar
+            android:id="@+id/sensitivitySeekbar"
+            android:layout_width="200dp"
+            android:layout_height="32dp"
+            />
+    </LinearLayout>
+
+
+    <Button
+        android:layout_marginTop="50dp"
+        android:id="@+id/deletingLeHighscores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Delete Highscore "
+        android:layout_gravity="center"
+        android:backgroundTint="@color/red"
+        style="@style/MenuButton"
+        />
+
+    <Button
+        android:layout_marginTop="50dp"
+        android:id="@+id/inGameOptionsContinueButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_gravity="center"
+        style="@style/MenuButton"
+        />
+
+</LinearLayout>

@@ -11,4 +11,13 @@
         <!-- Optional: Weitere Attribute hinzufügen -->
     </style>
 
+    <style name="MenuButton" parent="Widget.AppCompat.Button">
+        y<item name="android:textColor">@color/white</item>
+        <item name="android:colorBackground">@color/transparentGrey</item>
+        <item name="android:layout_margin">30sp</item>
+        <item name="android:textSize">24sp</item>
+
+        <!-- Optional: Weitere Attribute hinzufügen -->
+    </style>
+
 </resources>
