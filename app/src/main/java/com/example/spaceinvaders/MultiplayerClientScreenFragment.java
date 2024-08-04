@@ -17,10 +17,6 @@ public class MultiplayerClientScreenFragment extends Fragment {
 
     private SocketHandler socketHandler;
     private String ipAddress;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
