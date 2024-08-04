@@ -1,22 +1,10 @@
 
-x
-Happ/src/main/java/com/example/spaceinvaders/HighscoreScreenFragment.java,e\7\e7acbed9a44badd529ed1d0a78db80f6978fbb67
-@
-app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
-Å
-Q.idea/sonarlint/securityhotspotstore/e/7/e7acbed9a44badd529ed1d0a78db80f6978fbb67,3\5\35d6edb1e22d32b3f7273dbabcf29cc4ac0d09bf
 S
 #.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
 ]
 -.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
-v
-Fapp/src/main/java/com/example/spaceinvaders/EndGameScreenFragment.java,7\9\79fbcac336d1c03378f6ba821e8d011d5b2490c7
-m
-=app/src/main/java/com/example/spaceinvaders/MainActivity.java,f\3\f3b77b8cf96ff67333459ff377167d2eb21a3515
-t
-Dapp/src/main/java/com/example/spaceinvaders/StartScreenFragment.java,1\5\1597a7764a784dd4221df3d8d92034d3d9d9984d
 |
 Lapp/src/main/java/com/example/spaceinvaders/GameClasses/EnemyProjectile.java,1\1\115ec51efacd4c7580b8ec711467cc515379e144
 }

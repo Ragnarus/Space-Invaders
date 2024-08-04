@@ -19,6 +19,7 @@ public class StartScreenFragment extends Fragment implements StartScreenViewMode
 
     private StartScreenViewModel viewModel;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
