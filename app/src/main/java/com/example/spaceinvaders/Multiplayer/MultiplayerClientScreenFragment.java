@@ -1,6 +1,16 @@
-package com.example.spaceinvaders;
+package com.example.spaceinvaders.Multiplayer;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,39 +18,34 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.spaceinvaders.EndGameScreenFragment;
 import com.example.spaceinvaders.GameClasses.EnemyProjectile;
 import com.example.spaceinvaders.GameClasses.EnemyShips;
 import com.example.spaceinvaders.GameClasses.PlayerProjectile;
 import com.example.spaceinvaders.GameClasses.PlayerShip;
 import com.example.spaceinvaders.GameClasses.Projectile;
+import com.example.spaceinvaders.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@SuppressLint("SetTextI18n")
-public class MultiplayerServerScreenFragment extends Fragment implements SensorEventListener, Runnable{
-    private SocketHandler socketHandler;
 
+@SuppressLint("SetTextI18n")
+public class MultiplayerClientScreenFragment extends Fragment implements SensorEventListener, Runnable{
+
+    private SocketHandler socketHandler;
+    private String ipAddress;
     //Variables
     //Sensor
     private SensorManager sensorManager;
@@ -84,24 +89,29 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_multiplayergame_screen, container, false);
+
+
+        ipAddress = getArguments().getString("IP_ADDRESS");
+        Log.d("MultiplayerServerScreenFragment", "Received data: " + ipAddress);
 
         new Thread(() -> {
             try {
                 socketHandler = new SocketHandler();
-                socketHandler.startServer(12345); // Port-Nummer
-                ServerStart();
+                socketHandler.connectToServer(ipAddress, 12345); // IP-Adresse und Port des Servers
+
 
                 // Start receiving messages
                 socketHandler.receiveMessages(message -> getActivity().runOnUiThread(() ->
                         getmessage(message)
                 ));
 
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
-
 
         //Init the Views for the inGameOptions
         settingsBtn = view.findViewById(R.id.settingsbtn);
@@ -142,7 +152,7 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
 
         // Find the GamePanel from the inflated view
         panel = view.findViewById(R.id.gamepanel);
-        panel.setComTool(this);
+        panel.setComTool2(this);
 
 
         // Load the bitmaps from resources
@@ -186,18 +196,8 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
         lifes[1] = view.findViewById(R.id.lifeTwo);
         lifes[2] = view.findViewById(R.id.lifeThree);
 
-
-        return  view;
+        return view;
     }
-
-    public void ServerStart(){
-        getActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Server started", Toast.LENGTH_SHORT).show());
-        String message1 = "Start";
-        new SendMessageTask(socketHandler).execute(message1);
-        initializeEnemies();
-        start = true;
-    }
-
     public void getmessage(String message){
         switch (message) {
             case "enemykilled":
@@ -210,6 +210,10 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
             case "YouLose":
                 gameHasEnded(false,score);
                 break;
+            case "Start":
+                initializeEnemies();
+                start = true;
+                break;
         }
 
         //Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show();
@@ -219,7 +223,6 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
         new SendMessageTask(socketHandler).execute(message); // Verwenden Sie AsyncTask zum Senden der Nachricht
         //Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

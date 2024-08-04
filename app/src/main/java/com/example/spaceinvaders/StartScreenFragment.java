@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.spaceinvaders.Multiplayer.MultiplayerLobbyFragment;
 import com.example.spaceinvaders.databinding.FragmentStartScreenBinding;
 
 

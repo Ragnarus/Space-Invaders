@@ -1,4 +1,4 @@
-package com.example.spaceinvaders;
+package com.example.spaceinvaders.Multiplayer;
 import android.util.Log;
 
 import java.io.BufferedReader;

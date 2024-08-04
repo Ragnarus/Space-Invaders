@@ -1,4 +1,4 @@
-package com.example.spaceinvaders;
+package com.example.spaceinvaders.Multiplayer;
 
 
 import android.content.Context;
@@ -12,42 +12,49 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.List;
+import java.util.Objects;
 
 
-public class MultiplayerGamePanel extends SurfaceView {
+public class MultiplayerServerGamePanel extends SurfaceView {
     private Context mContext;
     private SurfaceHolder mSurfaceHolder;
     private Paint mPaint;
-    MultiplayerGameScreenFragment fragment;
+    MultiplayerServerScreenFragment fragment;
+    MultiplayerClientScreenFragment fragment2;
+    String Fragment;
 
-    public MultiplayerGamePanel(Context context) {
+    public MultiplayerServerGamePanel(Context context) {
         super(context);
         init(context);
         mContext = context;
     }
 
-    public MultiplayerGamePanel(Context context, AttributeSet attrs) {
+    public MultiplayerServerGamePanel(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
 
     }
 
-    public MultiplayerGamePanel(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MultiplayerServerGamePanel(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
         mContext = context;
     }
 
-    public MultiplayerGamePanel(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public MultiplayerServerGamePanel(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
         mContext = context;
     }
 
-    public void setComTool(MultiplayerGameScreenFragment fragment) {
+    public void setComTool(MultiplayerServerScreenFragment fragment) {
         this.fragment = fragment;
+        Fragment = "fragment";
     }
-
+    public void setComTool2(MultiplayerClientScreenFragment fragment2) {
+        this.fragment2 = fragment2;
+        Fragment = "fragment2";
+    }
     private void init(Context context) {
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
@@ -68,6 +75,12 @@ public class MultiplayerGamePanel extends SurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return fragment.onGamePanelTouchEvent(event);
+        if(Objects.equals(Fragment, "fragment2")){
+            return fragment2.onGamePanelTouchEvent(event);
+        }else {
+            return fragment.onGamePanelTouchEvent(event);
+        }
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.spaceinvaders;
+package com.example.spaceinvaders.Multiplayer;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

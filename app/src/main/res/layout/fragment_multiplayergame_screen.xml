@@ -12,7 +12,7 @@
         android:orientation="vertical">-
 
 
-        <com.example.spaceinvaders.MultiplayerServerGamePanel
+        <com.example.spaceinvaders.Multiplayer.MultiplayerServerGamePanel
             android:id="@+id/gamepanel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,6 +31,7 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="@drawable/baseline_settings_24"
+                android:visibility="gone"
                 android:text="" />
 
             <TextView
