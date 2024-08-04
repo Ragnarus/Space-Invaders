@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,8 @@ public class MultiplayerLobbyFragment extends Fragment {
         startServerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragmentContainer, MultiplayerServerScreenFragment.class, null).commit();
             }
         });
 
@@ -53,7 +55,12 @@ public class MultiplayerLobbyFragment extends Fragment {
             public void onClick(View v) {
                 String ipAddress = ipAddressInput.getText().toString();
                 if (!ipAddress.isEmpty()) {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString("IP_ADDRESS", ipAddress);
+                    MultiplayerClientScreenFragment fragment = new MultiplayerClientScreenFragment();
+                    fragment.setArguments(bundle);
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragmentContainer, fragment).commit();
                 }
             }
         });
