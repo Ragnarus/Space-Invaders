@@ -199,6 +199,19 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
     }
 
     public void getmessage(String message){
+        switch (message) {
+            case "enemykilled":
+                enemycount = 1;
+                initializeEnemies();
+                break;
+            case "YouWin":
+                gameHasEnded(true,score);
+                break;
+            case "YouLose":
+                gameHasEnded(false,score);
+                break;
+        }
+
         Toast.makeText(getContext(), "Received: " + message, Toast.LENGTH_LONG).show();
     }
 
@@ -211,7 +224,7 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
     public void onDestroy() {
         super.onDestroy();
         Log.d("MultiplayerServerScreen", "onDestroy called.");
-        //releaseResources();
+        releaseResources();
     }
     private void releaseResources() {
         Log.d("MultiplayerServerScreen", "Releasing resources.");
@@ -249,7 +262,6 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
             }
         }
         Log.d("MultiplayerServerScreen", "onPause called.");
-        //releaseResources();
     }
 
 
@@ -371,6 +383,7 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
             }
 
             if (playerShip.lives <= 0) {
+                sendmessage("YouWin");
                 gameHasEnded(false, score);
             }
 
@@ -418,6 +431,7 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
                     lifes[lifeCount].setVisibility(View.INVISIBLE);
                     lifeCount++;
                     if (playerShip.lives <= 0) {
+                        sendmessage("YouWin");
                         gameHasEnded(false, score);
                     }
                     enemyProjectilesToRemove.add(enemyProjectile); // Remove the projectile
@@ -463,6 +477,7 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
             // Calls initEnemies if all enemies are dead the method handles the Enemy spawn
             if (start && enemies.isEmpty()) {
                 //initializeEnemies();
+                sendmessage("YouLose");
                 gameHasEnded(true, score);
             }
 
@@ -470,14 +485,8 @@ public class MultiplayerServerScreenFragment extends Fragment implements SensorE
             panel.draw(xDraw, yDraw, bitMapDraw);
         }
     }
-    int a = 0;
     private void enemykilled(){
         sendmessage("enemykilled");
-        /*if(a<4){
-            enemycount=2;
-            initializeEnemies();
-            a++;
-        }*/
     }
 
 
